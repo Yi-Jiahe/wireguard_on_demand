@@ -157,38 +157,6 @@ func startStack(ctx context.Context, stack *Stack, plugins []Plugin, config map[
 }
 
 func wireguardHostDeployFunc(ctx *pulumi.Context) error {
-	// region, exists := ctx.GetConfig("aws:region")
-	// if !exists {
-	// 	return errors.New("aws:region config is not set")
-	// }
-	// logger.Info("region", "region", region)
-
-	// instanceConnectPrefixListNames := []string{
-	// 	fmt.Sprintf("com.amazonaws.%s.ec2-instance-connect", region),
-	// 	fmt.Sprintf("com.amazonaws.%s.ipv6.ec2-instance-connect", region),
-	// }
-	// logger.Info("instance connect prefix list names", "names", instanceConnectPrefixListNames)
-
-	// instanceConnectPrefixListIds := pulumi.StringArray{}
-
-	// for _, name := range instanceConnectPrefixListNames {
-	// 	prefixList, err := ec2.GetPrefixList(ctx, &ec2.GetPrefixListArgs{
-	// 		Filters: []ec2.GetPrefixListFilter{
-	// 			{
-	// 				Name: "prefix-list-name",
-	// 				Values: []string{
-	// 					name,
-	// 				},
-	// 			},
-	// 		},
-	// 	})
-	// 	if err != nil {
-	// 		logger.Error("failed to get prefix list", "name", name, "error", err)
-	// 		return err
-	// 	}
-	// 	instanceConnectPrefixListIds = append(instanceConnectPrefixListIds, pulumi.String(prefixList.Id))
-	// }
-
 	// Searching for the prefix list IDs isn't turning up any results for some reason
 	instanceConnectPrefixListIds := pulumi.StringArray{
 		pulumi.String("pl-012493c5f82b88e8e"), // com.amazonaws.ap-northeast-1.ec2-instance-connect

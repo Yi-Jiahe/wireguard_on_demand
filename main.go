@@ -120,10 +120,12 @@ func main() {
 	}
 }
 
+// Pulumi boilerplate
 func startStack(ctx context.Context, stack *Stack, plugins []Plugin, config map[string]auto.ConfigValue) (auto.Stack, error) {
 	projectName := stack.ProjectName
 	stackName := auto.FullyQualifiedStackName(stack.OrgName, projectName, stack.StackName)
 
+	// Stack contents
 	s, err := auto.UpsertStackInlineSource(ctx, stackName, projectName, wireguardHostDeployFunc)
 	if err != nil {
 		logger.Error("failed to create stack", "error", err, "stack", stackName)
@@ -156,7 +158,9 @@ func startStack(ctx context.Context, stack *Stack, plugins []Plugin, config map[
 	return s, nil
 }
 
+// Deploys a WireGuard host configuration
 func wireguardHostDeployFunc(ctx *pulumi.Context) error {
+	// For admin SSH access via EC2 Instance Connect, if required
 	// Searching for the prefix list IDs isn't turning up any results for some reason
 	instanceConnectPrefixListIds := pulumi.StringArray{
 		pulumi.String("pl-012493c5f82b88e8e"), // com.amazonaws.ap-northeast-1.ec2-instance-connect
@@ -198,6 +202,7 @@ func wireguardHostDeployFunc(ctx *pulumi.Context) error {
 		return err
 	}
 
+	// Retrieve AMI
 	ubuntu, err := ec2.LookupAmi(ctx, &ec2.LookupAmiArgs{
 		MostRecent: pulumi.BoolRef(true),
 		Filters: []ec2.GetAmiFilter{
@@ -214,6 +219,8 @@ func wireguardHostDeployFunc(ctx *pulumi.Context) error {
 		return err
 	}
 
+	// VM initialization script
+	// Configures machine firewalls and wireguard
 	userDataBytes, err := os.ReadFile("user_data.sh")
 	if err != nil {
 		return err
@@ -245,8 +252,8 @@ func wireguardHostDeployFunc(ctx *pulumi.Context) error {
 	})
 
 	userData = fmt.Sprintf(userData, serverConfig.String())
-	fmt.Print(userData)
 
+	// Provision the WireGuard host
 	wgHost, err := ec2.NewInstance(ctx, "wg-host", &ec2.InstanceArgs{
 		Ami:          pulumi.String(ubuntu.Id),
 		InstanceType: pulumi.String(ec2.InstanceType_T2_Micro),

@@ -6,6 +6,7 @@ require (
 	github.com/joho/godotenv v1.5.1
 	github.com/pulumi/pulumi-aws/sdk/v4 v4.38.1
 	github.com/pulumi/pulumi/sdk/v3 v3.117.0
+	golang.org/x/crypto v0.23.0
 )
 
 require (
@@ -76,7 +77,6 @@ require (
 	github.com/xanzy/ssh-agent v0.3.3 // indirect
 	github.com/zclconf/go-cty v1.13.2 // indirect
 	go.uber.org/atomic v1.9.0 // indirect
-	golang.org/x/crypto v0.23.0 // indirect
 	golang.org/x/exp v0.0.0-20231110203233-9a3e6036ecaa // indirect
 	golang.org/x/mod v0.14.0 // indirect
 	golang.org/x/net v0.25.0 // indirect
